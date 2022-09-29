@@ -7,9 +7,9 @@ name = "pypi"
 pyyaml = "*"
 requests = "*"
 click = "*"
-ansible = "==2.10.7"
+ansible = "*"
 
 [dev-packages]
 
 [requires]
-python_version = "3.7"
+python_version = "3.10"
