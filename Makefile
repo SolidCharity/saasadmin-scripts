@@ -1,18 +1,14 @@
-VENV := . .venv/bin/activate &&
+PIPENV := pipenv run &&
 
 all:
 	@echo "help:"
 	@echo "  make quickstart"
 
 
-quickstart: create_venv pip_packages
+quickstart: create_pipenv
 	@echo 
 	@echo =====================================================================================
 	@echo Installation has finished successfully
 
-pip_packages:
-	${VENV} pip install --upgrade pip
-	${VENV} pip install -r requirements.txt
-
-create_venv:
-	python3 -m venv .venv
+create_pipenv:
+	pipenv install
