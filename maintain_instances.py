@@ -71,7 +71,9 @@ def run_ansible(config, ansible_inventory_template, ansible_playbook, instance):
                     stderr=subprocess.PIPE)
     while True:
         output = process.stdout.readline()
-        print(output.strip().decode())
+        printoutput = output.strip().decode()
+        if printoutput:
+            print(output.strip().decode())
         return_code = process.poll()
         if return_code is not None:
             print('RETURN CODE', return_code)
