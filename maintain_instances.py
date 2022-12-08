@@ -100,6 +100,7 @@ def setup_instances(config, url, admin_token, host_name, product_slug, ansible_p
     if resp.status_code == 500:
         print(f"problem in setup_instances: {url} {params}")
         print(resp)
+        print(resp.content)
         return
     data = resp.json()
 
