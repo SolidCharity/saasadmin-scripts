@@ -97,6 +97,10 @@ def setup_instances(config, url, admin_token, host_name, product_slug, ansible_p
     params = dict(format='json', hostname=host_name, product=product_slug, action=action)
     url += '/api/v1/instances/'
     resp = requests.get(url=url, params=params, headers={'Authorization': f'Token {admin_token}'})
+    if resp.status_code == 500:
+        print(f"problem in setup_instances: {url} {params}")
+        print(resp)
+        return
     data = resp.json()
 
     if 'detail' in data:
