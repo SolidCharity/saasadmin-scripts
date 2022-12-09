@@ -8,6 +8,7 @@ pyyaml = "*"
 requests = "*"
 click = "*"
 ansible = "*"
+"hs.admin.api" = {git = "https://dev.hostsharing.net/r/ansible/hs.admin.api.git"}
 
 [dev-packages]
 
