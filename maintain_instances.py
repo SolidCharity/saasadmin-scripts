@@ -162,7 +162,9 @@ def setup_instances(config, url, admin_token, host_name, product_slug, ansible_p
             try:
                 resp = requests.get(url=instance['instance_url'])
                 if resp.status_code != 200:
+                    print(f"problem checking instance {instance['instance_url']}")
                     print(resp)
+                    print(respo.content)
                 else:
                     canRead = True
             except:
