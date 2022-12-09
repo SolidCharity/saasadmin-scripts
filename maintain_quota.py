@@ -48,7 +48,7 @@ def maintain_quota(config, url, admin_token, host_name, product_slug, pac_user, 
         if return_code:
             continue
 
-        print(instance['identifier'] + ' ' + instance['status'])
+        print(instance['prefix'] + instance['identifier'] + ' ' + instance['status'])
         #print(instance)
 
 
