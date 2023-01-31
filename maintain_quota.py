@@ -14,10 +14,9 @@ def convert_to_mb(value):
     if not value:
         return None
     if value.endswith('M'):
-        return value[:-1]
+        return int(value[:-1])
     elif value.endswith('G'):
-        return value[:-1] + '000'
-    return value
+        return int(value[:-1])*1000
 
 def maintain_quota(config, url, admin_token, host_name, product_slug, pac_user, pac_pwd):
     params = dict(format='json', hostname=host_name, product=product_slug, action="quota")
@@ -60,11 +59,12 @@ def maintain_quota(config, url, admin_token, host_name, product_slug, pac_user, 
         username = pac_user + '-' + instance['prefix'] + instance['identifier']
         current_hsuser = api.user.search(where={'name': username})[0]
         need_change = False
-        new_quota_hardlimit = int(new_quota_softlimit) + 2000
-        new_storage_hardlimit = int(new_storage_softlimit) + 25000
-        if current_hsuser['quota_softlimit'] != new_quota_softlimit or current_hsuser['quota_hardlimit'] != new_quota_hardlimit:
+        # if we change the hard limit, we must change the softlimit too
+        new_quota_hardlimit = new_quota_softlimit + 2000
+        new_storage_hardlimit = new_storage_softlimit + 25000
+        if int(current_hsuser['quota_softlimit']) != new_quota_softlimit:
             need_change = True
-        if current_hsuser['storage_softlimit'] != new_storage_softlimit or current_hsuser['storage_hardlimit'] != new_storage_hardlimit:
+        if int(current_hsuser['storage_softlimit']) != new_storage_softlimit:
             need_change = True
 
         # update quota if different
@@ -78,7 +78,7 @@ def maintain_quota(config, url, admin_token, host_name, product_slug, pac_user, 
                                                            })
 
         # TODO: check current usage
-        # TODO: tell the customer if quota is full
+        # TODO: tell the admin or the customer if quota is full
 
 
 
