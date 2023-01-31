@@ -60,12 +60,12 @@ def maintain_quota(config, url, admin_token, host_name, product_slug, pac_user, 
         username = pac_user + '-' + instance['prefix'] + instance['identifier']
         current_hsuser = api.user.search(where={'name': username})[0]
         need_change = False
-        if current_hsuser['quota_softlimit'] != new_quota_softlimit:
+        new_quota_hardlimit = int(new_quota_softlimit) + 2000
+        new_storage_hardlimit = int(new_storage_softlimit) + 25000
+        if current_hsuser['quota_softlimit'] != new_quota_softlimit or current_hsuser['quota_hardlimit'] != new_quota_hardlimit:
             need_change = True
-        if current_hsuser['storage_softlimit'] != new_storage_softlimit:
+        if current_hsuser['storage_softlimit'] != new_storage_softlimit or current_hsuser['storage_hardlimit'] != new_storage_hardlimit:
             need_change = True
-        new_quota_hardlimit = int(new_quota_softlimit) + 100
-        new_storage_hardlimit = int(new_storage_softlimit) + 100
 
         # update quota if different
         if need_change:
