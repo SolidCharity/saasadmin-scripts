@@ -65,7 +65,7 @@ def run_ansible(config, ansible_inventory_template, ansible_playbook, instance):
         f.write(template_content)
 
     # call ansible script to install/update instance
-    process = subprocess.Popen(['ansible-playbook', '-i',
+    process = subprocess.Popen(['ansible-playbook', '-f', '1', '-i',
                     'tmp.inventory.yml', ansible_playbook],
                     stdout=subprocess.PIPE,
                     stderr=subprocess.PIPE)
