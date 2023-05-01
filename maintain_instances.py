@@ -109,7 +109,24 @@ def setup_instances(config, url, admin_token, host_name, product_slug, ansible_p
 
     # print(data)
 
-    with open(ansible_path + '/inventory-template.yml', 'r') as file:
+    # paths for working with hs.ansible scripts
+    inventory_template_path = ansible_path + '/saasadmin/inventory-saasadmin.yml'
+    playbook_init_path = ansible_path + '/../../init.yml'
+    playbook_install_path = ansible_path + '/install.yml'
+    playbook_uninstall_path = ansible_path + '/../../remove.yml'
+    playbook_update_path = ansible_path + '/update.yml'
+    playbook_saas_path = None
+
+    # working with old ansible scripts?
+    if not os.path.isdir(ansible_path + '/saasadmin/'):
+        inventory_template_path = ansible_path + '/inventory-template.yml'
+        playbook_init_path = ansible_path + '/playbook-init.yml'
+        playbook_install_path = ansible_path + '/playbook-install.yml'
+        playbook_uninstall_path = ansible_path + '/playbook-uninstall.yml'
+        playbook_update_path = ansible_path + '/playbook-update.yml'
+        playbook_saas_path = ansible_path + '/playbook-saas.yml'
+
+    with open(inventory_template_path, 'r') as file:
         ansible_inventory_template = file.read()
 
     return_code = None
@@ -124,16 +141,17 @@ def setup_instances(config, url, admin_token, host_name, product_slug, ansible_p
         # print(instance)
 
         if action == "init" and instance['status'] == IN_PREPARATION:
-            return_code = run_ansible(config, ansible_inventory_template, ansible_path + '/playbook-init.yml', instance)
+            return_code = run_ansible(config, ansible_inventory_template, playbook_init_path, instance)
             if return_code:
                 continue
 
         if action == "install" and instance['status'] == IN_PREPARATION:
-            return_code = run_ansible(config, ansible_inventory_template, ansible_path + '/playbook-install.yml', instance)
+            return_code = run_ansible(config, ansible_inventory_template, playbook_install_path, instance)
             if return_code:
                 continue
 
-            return_code = run_ansible(config, ansible_inventory_template, ansible_path + '/playbook-saas.yml', instance)
+            if playbook_saas_path:
+                return_code = run_ansible(config, ansible_inventory_template, playbook_saas_path, instance)
             if return_code:
                 continue
 
@@ -143,12 +161,12 @@ def setup_instances(config, url, admin_token, host_name, product_slug, ansible_p
                 params=params, headers={'Authorization': f'Token {admin_token}'})
 
         elif action == "update" and instance['status'] != IN_PREPARATION and instance['status'] != REMOVED:
-            return_code = run_ansible(config, ansible_inventory_template, ansible_path + '/playbook-update.yml', instance)
+            return_code = run_ansible(config, ansible_inventory_template, playbook_update_path, instance)
             if return_code:
                 continue
 
         elif action == "remove" and instance['status'] == TO_BE_REMOVED:
-            return_code = run_ansible(config, ansible_inventory_template, ansible_path + '/playbook-uninstall.yml', instance)
+            return_code = run_ansible(config, ansible_inventory_template, playbook_uninstall_path, instance)
             if return_code:
                 continue
 
