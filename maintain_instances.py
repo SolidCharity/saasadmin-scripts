@@ -57,6 +57,7 @@ def run_ansible(config, ansible_inventory_template, ansible_playbook, instance):
             .replace('{{Random32DigitsLetters2}}', random_password(32))
             .replace('{{Random32DigitsLetters3}}', random_password(32))
             .replace('{{Random32DigitsLetters4}}', random_password(32))
+            .replace('{{url_proxy}}', config['saasadmin']['url_proxy'])
             .replace('{{smtp_from}}', config['saasadmin']['smtp_from'])
             .replace('{{smtp_host}}', config['saasadmin']['smtp_host'])
             .replace('{{smtp_port}}', config['saasadmin']['smtp_port'])

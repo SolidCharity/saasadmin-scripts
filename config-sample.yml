@@ -11,3 +11,5 @@ saasadmin:
 
   pacuser: xyz00
   pacpwd: topsecret
+
+  url_proxy: https://proxy.solidcharity.com
