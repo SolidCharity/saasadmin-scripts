@@ -12,9 +12,11 @@ Sample calls:
     export CONFIG=test
     export HOSTNAME=hxy.hostsharing.net
 
+    ln -s ../hs.ansible/inventories/group_vars
+
     python3 maintain_instances.py --hostname $HOSTNAME \
         --product $PRODUCT_SLUG \
-        --ansiblepath ../ansible/Hostsharing-Ansible-$PRODUCT \
+        --ansiblepath ../hs.ansible/playbooks/$PRODUCT_SLUG \
         --configfile config-$CONFIG.yaml \
         --action $ACTION
 

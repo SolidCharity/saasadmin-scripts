@@ -1,4 +1,5 @@
 .venv
+group_vars
 config.yaml
 config-dev.yaml
 config-test.yaml
