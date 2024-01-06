@@ -93,7 +93,7 @@ def run_ansible(config, ansible_inventory_template, ansible_playbook, instance):
     return return_code
 
 
-def setup_instances(config, url, admin_token, host_name, product_slug, ansible_path, action, limit_to_status):
+def setup_instances(config, url, admin_token, host_name, product_slug, ansible_path, action, limit_to_status, limit_to_instance):
 
     params = dict(format='json', hostname=host_name, product=product_slug, action=action)
     url += '/api/v1/instances/'
@@ -136,6 +136,9 @@ def setup_instances(config, url, admin_token, host_name, product_slug, ansible_p
             continue
 
         if limit_to_status is not None and instance['status'] != limit_to_status:
+            continue
+
+        if limit_to_instance is not None and instance['identifier'] != limit_to_instance:
             continue
 
         print(instance['identifier'] + ' ' + instance['status'])
@@ -205,8 +208,9 @@ def setup_instances(config, url, admin_token, host_name, product_slug, ansible_p
 @click.option('--url', help='The url for access to the REST API of SaasAdmin')
 @click.option('--configfile', default='config.yaml', help='The config file to use')
 @click.option('--action', default='install', help='The action: init, install, update, remove, check')
+@click.option('--limit_to_instance', default=None, help='Only run on this instance if it matches the other criteria')
 @click.option('--limit_to_status', default=None, help='Only consider instances with this status, eg. READY')
-def main(product, hostname, ansiblepath, admintoken, url, configfile, action, limit_to_status):
+def main(product, hostname, ansiblepath, admintoken, url, configfile, action, limit_to_status, limit_to_instance):
     """run the ansible playbook for all specified instances"""
 
     # load from config.yml file
@@ -225,7 +229,7 @@ def main(product, hostname, ansiblepath, admintoken, url, configfile, action, li
         print('action must be one of these values: install, remove, update or check')
         exit(-1)
 
-    setup_instances(config, url, admintoken, hostname, product, ansiblepath, action, limit_to_status)
+    setup_instances(config, url, admintoken, hostname, product, ansiblepath, action, limit_to_status, limit_to_instance)
 
 if __name__ == '__main__':
     main()
