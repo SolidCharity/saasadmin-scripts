@@ -8,9 +8,9 @@ pyyaml = "*"
 requests = "*"
 click = "*"
 ansible = "*"
-"hs.admin.api" = {git = "https://dev.hostsharing.net/r/ansible/hs.admin.api.git"}
+"hs.admin.api" = "*"
 
 [dev-packages]
 
 [requires]
-python_version = "3.9"
+python_version = "3.11"
