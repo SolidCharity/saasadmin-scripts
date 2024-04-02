@@ -16,7 +16,11 @@ def convert_to_mb(value):
     if value.endswith('M'):
         return int(value[:-1])
     elif value.endswith('G'):
-        return int(value[:-1])*1000
+        quota = int(value[:-1])
+        # for bigger quota, give some more space
+        if quota > 20:
+            quota += 3
+        return quota*1000
 
 def maintain_quota(config, url, admin_token, host_name, product_slug, pac_user, pac_pwd):
     params = dict(format='json', hostname=host_name, product=product_slug, action="quota")
