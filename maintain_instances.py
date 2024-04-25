@@ -189,8 +189,10 @@ def setup_instances(config, url, admin_token, host_name, product_slug, ansible_p
                     print(respo.content)
                 else:
                     canRead = True
-            except:
+            except Exception as e:
                 print("Cannot read %s" % (instance['identifier'],))
+                print(e)
+
                 canRead = False
 
             if instance['status'] == READY and canRead:
